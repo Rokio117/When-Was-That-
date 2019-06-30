@@ -10,12 +10,31 @@
   <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 </head>
 <body>
-  <main>
+  <section id="welcome-page">
     <h1>When Was That?</h1>
     <div>Enter a movie or song title and we will tell you when it was released.</div>
     <form>
-      <input type="button" value="Let's Go!"></input>
-    </form>
+        <input type="button" value="Let's Go!" id="lets-go-button"></input>
+      </form>
+  </section>
+  <main id="main-page" class="hidden">
+    <h2>When Was That?</h2>
+    <fieldset>
+      <p>Enter a Movie or Song</p>
+      <form id="search-form">
+        <input id="user-search" type="text" required></input>
+        <label for="movie">Movie</label>
+        <input type="radio" class="radio-button" id="movie-radio" name = "media-selector" value="Movie" checked></input>
+        <label for="song">Song</label>
+        <input type="radio" class="radio-button" id="song-radio" name="media-selector" value="Song"></input>
+        <input type="submit" value="Go!" id="search-button">
+       
+      </form>
+    </fieldset>
+    <section id="results" class="hidden">
+      <div id="not-what-wanted">Now what you wanted? Try: <span id="try-new-links">Placeholder</span></div>
+    </section>
+    <script src="index.js"></script>
   </main>
   
 </body>
