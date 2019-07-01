@@ -108,37 +108,37 @@ function displayMovieImage(imageData){
 function getAlternateMovieSearches(response) {
   altLength = response.results.length
   console.log(altLength)
+  responseLength =
   altMov = []
-    for (i=1; i<=3; i++)
-  [
-  altOne = {
-    'name' : `${response.results[1].title}`,
-    'id' : `${response.results[1].id}`,
-    'date' : `${response.results[1].release_date}`
-  },
-  altTwo = {
-    'name' : `${response.results[2].title}`,
-    'id' : `${response.results[2].id}`,
-    'date' : `${response.results[2].release_date}`
-    },
-  altThree = {
-    'name' : `${response.results[3].title}`,
-    'id' : `${response.results[3].id}`,
-    'date' : `${response.results[3].release_date}`
-  }]
+  if (altLength <= 3){
+    responseLength = altLength
+    console.log('3 or less')
+    console.log(responseLength)
+  }
+  else {
+    responseLength = 3
+    console.log('greater than 3')
+  }
+  for (i=1; i <= responseLength; i++) {
+    altMov.push({ 
+    'name' : `${response.results[i].title}`,
+    'id' : `${response.results[i].id}`,
+    'date' : `${response.results[i].release_date}`})
+  }
+  console.log('alt movie list', altMov)
   
-  
-  altMovieObject = [altOne, altTwo, altThree]
-  displayAltMovies(altMovieObject)
+  displayAltMovies(altMov)
 }
 
 
 function displayAltMovies(altMovies) {
-  altOneText = [`${altMovies[0].name}`, `${altMovies[0].date}`]
-  altTwoText = [`${altMovies[1].name}`, `${altMovies[1].date}`]
-  altThreeText = [`${altMovies[2].name}`, `${altMovies[2].date}`]
-  allAlts = [altOneText, altTwoText, altThreeText]
-  allAlts.map(function(alt){
+  altMoviesLength = altMovies.length
+  altMoviesList =[]
+  for (i = 0; i < altMoviesLength; i++) {
+    altMoviesList.push([altMovies[i].name, altMovies[i].date])
+  }
+
+  altMoviesList.map(function(alt){
     $('#not-what-wanted').append(`<button class="new-search" value="${alt[0]}">${alt[0]}, ${alt[1]}</button>`)
   })
 }
