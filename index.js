@@ -49,7 +49,7 @@ function fetchMovieData(movieSearchData) {
     return response.json()
   })
   .then(function(responseJson) {
-    console.log(responseJson)
+    console.log('first search', responseJson)
     getSpecificMovie(responseJson)
     getAlternateMovieSearches(responseJson)
   })
@@ -62,33 +62,32 @@ function getSpecificMovie(data) {
     return response.json()
   })
   .then(function(responseJson){
-    
+    console.log('specific search', responseJson)
     formatMovieData(responseJson)
   })
 }
 
 function formatMovieData(data) {
   releaseDate = (data.release_date)
-  
-  
-
+  if (data.credits.crew.length !== 0) {
   director = data.credits.crew[0].name
-
+  }
+  if (data.credits.cast.length >= 3){
   castOne = data.credits.cast[0].name
   castTwo = data.credits.cast[1].name
   castThree = data.credits.cast[2].name
   castList = `${castOne}, ${castTwo}, ${castThree}`
-
+  }
   overView = data.overview
-
-  simOne = data.similar.results[0].title
-  simOneButton = `<button class="new-search" value="${simOne}">${simOne}</button>`
-  simTwo = data.similar.results[1].title
-  simTwoButton = `<button class="new-search" value="${simTwo}">${simTwo}</button>`
-  simThree = data.similar.results[2].title
-  simThreeButton = `<button class="new-search" value="${simThree}">${simThree}</button>`
-  simList = `${simOneButton}${simTwoButton}${simThreeButton}`
-
+  if (data.similar.results.length >= 3) {
+    simOne = data.similar.results[0].title
+    simOneButton = `<button class="new-search" value="${simOne}">${simOne}</button>`
+    simTwo = data.similar.results[1].title
+    simTwoButton = `<button class="new-search" value="${simTwo}">${simTwo}</button>`
+    simThree = data.similar.results[2].title
+    simThreeButton = `<button class="new-search" value="${simThree}">${simThree}</button>`
+    simList = `${simOneButton}${simTwoButton}${simThreeButton}`
+  }
   displayMovieData(releaseDate, director, castList, overView, simList, data)
 }
 function displayMovieData(release, director, cast, overView, similar, data) {
@@ -107,29 +106,41 @@ function displayMovieImage(imageData){
 }
 function getAlternateMovieSearches(response) {
   altLength = response.results.length
-  console.log(altLength)
-  responseLength =
+  
   altMov = []
-  if (altLength <= 3){
-    responseLength = altLength
-    console.log('3 or less')
-    console.log(responseLength)
+  if (altLength > 3){
+   responseLength = 4
+   
+   $('#not-wanted-div').removeClass('hidden')
+   formatAltMovies(responseLength, response)
   }
-  else {
-    responseLength = 3
-    console.log('greater than 3')
+  if (altLength == 3) {
+    responseLength = 2
+    formatAltMovies(responseLength, response)
   }
-  for (i=1; i <= responseLength; i++) {
-    altMov.push({ 
-    'name' : `${response.results[i].title}`,
-    'id' : `${response.results[i].id}`,
-    'date' : `${response.results[i].release_date}`})
+  if (altLength === 2) {
+    responseLength = 1
+    $('#not-wanted-div').removeClass('hidden')
+    formatAltMovies(responseLength, response)
   }
-  console.log('alt movie list', altMov)
+  if (altLength === 1) {
+    responseLength = 0
+    $('#not-wanted-div').addClass('hidden')
+  }
   
   displayAltMovies(altMov)
-}
+  }
 
+function formatAltMovies(movies, response) {
+  if (movies !== 0) {
+    for (i=1; i <= movies; i++) {
+      altMov.push({ 
+      'name' : `${response.results[i].title}`,
+      'id' : `${response.results[i].id}`,
+      'date' : `${response.results[i].release_date}`})
+    }
+  }
+}
 
 function displayAltMovies(altMovies) {
   altMoviesLength = altMovies.length
