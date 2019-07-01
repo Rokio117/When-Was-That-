@@ -26,13 +26,13 @@ function handleMediaChoice() {
     userSearch = $('#user-search').val()
     encodedSearch = encodeURIComponent(userSearch)
     $('#results').removeClass('hidden')
-    console.log(encodedSearch)
+    
     if ($('input:checked').val() == 'Movie') {
-      console.log('searching movies')
+     
       fetchMovieData(encodedSearch)
     }
     else if ($('input:checked').val() == 'Song') {
-      console.log('searching songs')
+      
     }
   })
 }
@@ -49,7 +49,9 @@ function fetchMovieData(movieSearchData) {
     return response.json()
   })
   .then(function(responseJson) {
+    console.log(responseJson)
     getSpecificMovie(responseJson)
+    getAlternateMovieSearches(responseJson)
   })
 }
 function getSpecificMovie(data) {
@@ -60,7 +62,7 @@ function getSpecificMovie(data) {
     return response.json()
   })
   .then(function(responseJson){
-    console.log(responseJson)
+    
     formatMovieData(responseJson)
   })
 }
@@ -80,9 +82,12 @@ function formatMovieData(data) {
   overView = data.overview
 
   simOne = data.similar.results[0].title
+  simOneButton = `<button class="new-search" value="${simOne}">${simOne}</button>`
   simTwo = data.similar.results[1].title
+  simTwoButton = `<button class="new-search" value="${simTwo}">${simTwo}</button>`
   simThree = data.similar.results[2].title
-  simList = `${simOne}, ${simTwo}, ${simThree}`
+  simThreeButton = `<button class="new-search" value="${simThree}">${simThree}</button>`
+  simList = `${simOneButton}${simTwoButton}${simThreeButton}`
 
   displayMovieData(releaseDate, director, castList, overView, simList, data)
 }
@@ -100,13 +105,70 @@ function displayMovieImage(imageData){
   posterUrl = `${posterBaseUrl}${posterPath}`
   return posterUrl
 }
+function getAlternateMovieSearches(response) {
+  altLength = response.results.length
+  console.log(altLength)
+  altMov = []
+    for (i=1; i<=3; i++)
+  [
+  altOne = {
+    'name' : `${response.results[1].title}`,
+    'id' : `${response.results[1].id}`,
+    'date' : `${response.results[1].release_date}`
+  },
+  altTwo = {
+    'name' : `${response.results[2].title}`,
+    'id' : `${response.results[2].id}`,
+    'date' : `${response.results[2].release_date}`
+    },
+  altThree = {
+    'name' : `${response.results[3].title}`,
+    'id' : `${response.results[3].id}`,
+    'date' : `${response.results[3].release_date}`
+  }]
+  
+  
+  altMovieObject = [altOne, altTwo, altThree]
+  displayAltMovies(altMovieObject)
+}
+
+
+function displayAltMovies(altMovies) {
+  altOneText = [`${altMovies[0].name}`, `${altMovies[0].date}`]
+  altTwoText = [`${altMovies[1].name}`, `${altMovies[1].date}`]
+  altThreeText = [`${altMovies[2].name}`, `${altMovies[2].date}`]
+  allAlts = [altOneText, altTwoText, altThreeText]
+  allAlts.map(function(alt){
+    $('#not-what-wanted').append(`<button class="new-search" value="${alt[0]}">${alt[0]}, ${alt[1]}</button>`)
+  })
+}
 
 
 //IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 
+function handleNewSearch(searchParam) {
+  $('main').on('click', '.new-search', function(event){
+    newSearch = $(this).val()
+    $('#results').empty()
+    $('#not-what-wanted').empty()
+    $('#user-search').val(newSearch)
+    
+    encodedSearch = encodeURIComponent(newSearch)
+    if ($('input:checked').val() == 'Movie') {
+      
+      fetchMovieData(encodedSearch)
+    }
+    else if ($('input:checked').val() == 'Song') {
+      
+    }
+    
+  })
+}
+
 function callHandles(){
   handleLetsGo()
   handleMediaChoice()
+  handleNewSearch()
 }
 $(callHandles)
 
