@@ -7,6 +7,7 @@ const posterBaseUrl = 'https://image.tmdb.org/t/p/w500/'
 
 const songBaseUrl ='http://ws.audioscrobbler.com/2.0/?method=track.search&track='
 const songSearchUrl = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo'
+const similarSongUrl = 'http://ws.audioscrobbler.com/2.0/?method=track.getsimilar'
 const songApiKey ='&api_key=5693fd68291fa577eff3066dbff9bbc2'
 const songAdditionalQs ='&format=json'
 
@@ -32,7 +33,7 @@ function handleMediaChoice() {
       fetchMovieData(encodedSearch)
     }
     else if ($('input:checked').val() == 'Song') {
-      
+      fetchSongData(encodedSearch)
     }
   })
 }
@@ -155,22 +156,134 @@ function displayAltMovies(altMovies) {
 }
 
 
-//IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+//Song search functions
+
+function fetchSongData(songData){
+  url = `${songBaseUrl}${songData}${songApiKey}${songAdditionalQs}`
+  fetch(url)
+  .then(function(response){
+    return response.json()
+  })
+  .then(function(responseJson){
+    songData = responseJson
+    console.log('first search', responseJson)
+    songNum = songData.results.trackmatches.track[0].mbid
+    getSpecificSong(songNum)
+    getSimilarSongs(songNum)
+    formatOtherSongs(responseJson)
+   
+  })
+}
+
+function getSpecificSong(songNum) {
+  songIdUrl = `${songSearchUrl}${songApiKey}&mbid=${songNum}${songAdditionalQs}`
+ 
+  fetch(songIdUrl)
+  .then(function(response){
+    return response.json()
+  })
+  .then(function(responseJson){
+    console.log('second search', responseJson)
+    
+    displayMusicData(responseJson)
+  })
+}
+
+function getSimilarSongs(data) {
+  similarUrl = `${similarSongUrl}&mbid=${data}${songApiKey}${songAdditionalQs}`
+  fetch(similarUrl)
+  .then(function(response){
+    return response.json()
+  })
+  .then(function(responsejson){
+    formatSimilarSongs(responsejson)
+  })
+}
+
+function displayMusicData(musicData){
+  
+  $('#results').append(`<div id="published-in">Published: ${musicData.track.wiki.published}</div>`)
+  musicImg = (musicData.track.album.image[3]["#text"])
+  $('#results').append(`<div id="artist-name">Artist(s): ${musicData.track.artist.name}`)
+  $('#results').append(`<div id="album-name">Album: ${musicData.track.album.title}`)
+  $('#results').append(`<a href="${musicData.track.url}" id="listen-link" target="blank">Listen at last.fm</a>`)
+  displayMusicImage(musicImg)
+  
+}
+
+function formatOtherSongs(data){
+  otherLength = data.results.trackmatches.track.length
+  if (otherLength >=3) {
+    otherSongs = 3
+    displayOtherSongs(otherSongs, data)
+  }
+  if (otherLength < 3) {
+    otherSongs = otherLength
+    displayOtherSongs(otherSongs, data)
+  }
+}
+
+function displayOtherSongs(num, data){
+  
+  $('#not-what-wanted').append(`<div id="not-wanted-div"></div>`)
+  for (i=1; i < num; i++) {
+    
+    $('#not-wanted-div').append(`<button class="new-search" value="${data.results.trackmatches.track[i].mbid}">${data.results.trackmatches.track[i].name} by 
+    ${data.results.trackmatches.track[i].artist}</button>`)
+  }
+
+}
+function formatSimilarSongs(simData) {
+  
+  simNum = simData.similartracks.track.length
+  if (simNum >= 3) {
+    simNumDisplay = 3
+    displaySimilarSongs(simNumDisplay, simData)
+  }
+  if (simNum < 3){
+    simNumDisplay = simNum
+    displaySimilarSongs(simNumDisplay, simData)
+  }
+}
+
+function displaySimilarSongs(number, data) {
+  $('#results').append(`<div id="try-similar">Similar Songs: </div>`)
+  for (i=0; i < number; i++){
+    $('#try-similar').append(`<button class="new-search" value="${data.similartracks.track[i].mbid}">${data.similartracks.track[i].name} by 
+    ${data.similartracks.track[i].artist.name}</button>`)
+  }
+}
+
+function displayMusicImage(musicImgSrc) {
+  
+  $('#results').append(`<img src="${musicImgSrc}"</img>`)
+}
+
+
+
+//IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 
 function handleNewSearch(searchParam) {
   $('main').on('click', '.new-search', function(event){
-    newSearch = $(this).val()
-    $('#results').empty()
-    $('#not-what-wanted').empty()
-    $('#user-search').val(newSearch)
+  
     
-    encodedSearch = encodeURIComponent(newSearch)
+    
     if ($('input:checked').val() == 'Movie') {
+      newSearch = $(this).val()
+      encodedSearch = encodeURIComponent(newSearch)
+      $('#results').empty()
+      $('#not-what-wanted').empty()
+      $('#user-search').val(newSearch)
       
       fetchMovieData(encodedSearch)
     }
     else if ($('input:checked').val() == 'Song') {
-      
+      songVal = $(this).val()
+      console.log(songVal)
+      $('#results').empty()
+      $('#not-wanted-div').empty()
+      getSpecificSong(songVal)
+      getSimilarSongs(songVal)
     }
     
   })
