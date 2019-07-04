@@ -49,14 +49,15 @@ function fetchMovieData(movieSearchData) {
     })
     .then(function(responseJson) {
       console.log("first search", responseJson);
-      getSpecificMovie(responseJson);
+      movieId = responseJson.results[0].id
+      getSpecificMovie(movieId);
       getAlternateMovieSearches(responseJson);
     });
 }
 
 function getSpecificMovie(data) {
-  movieId = data.results[0].id;
-  idUrl = `${movieSearchUrl}${movieId}?${movieApiKey}&language=en-US&append_to_response=similar,credits`;
+  //movieId = data.results[0].id;
+  idUrl = `${movieSearchUrl}${data}?${movieApiKey}&language=en-US&append_to_response=similar,credits`;
   fetch(idUrl)
     .then(function(response) {
       return response.json();
@@ -80,12 +81,12 @@ function formatMovieData(data) {
   }
   overView = data.overview;
   if (data.similar.results.length >= 3) {
-    simOne = data.similar.results[0].title;
-    simOneButton = `<button class="new-search" value="${simOne}">${simOne}</button>`;
-    simTwo = data.similar.results[1].title;
-    simTwoButton = `<button class="new-search" value="${simTwo}">${simTwo}</button>`;
-    simThree = data.similar.results[2].title;
-    simThreeButton = `<button class="new-search" value="${simThree}">${simThree}</button>`;
+    simOne = data.similar.results[0];
+    simOneButton = `<button class="new-search" value="${simOne.id}">${simOne.title}</button>`;
+    simTwo = data.similar.results[1];
+    simTwoButton = `<button class="new-search" value="${simTwo.id}">${simTwo.title}</button>`;
+    simThree = data.similar.results[2];
+    simThreeButton = `<button class="new-search" value="${simThree.id}">${simThree.title}</button>`;
     simList = `${simOneButton}${simTwoButton}${simThreeButton}`;
   }
   displayMovieData(releaseDate, director, castList, overView, simList, data);
@@ -110,6 +111,7 @@ function displayMovieImage(imageData) {
 }
 
 function getAlternateMovieSearches(response) {
+  console.log(response)
   altLength = response.results.length;
   altMov = [];
   if (altLength > 3) {
@@ -130,7 +132,7 @@ function getAlternateMovieSearches(response) {
     responseLength = 0;
     $("#not-wanted-div").addClass("hidden");
   }
-
+  console.log(altMov);
   displayAltMovies(altMov);
 }
 
@@ -151,8 +153,8 @@ function formatAltMovies(movies, response) {
 function displayAltMovies(altMovies) {
 
   const movies = altMovies.map(function(movie) {
-    return `<button class="new-search" value="${movie[0]}">${movie[0]}, ${
-      movie[1]
+    return `<button class="new-search" value="${movie.id}">${movie.name}, ${
+      movie.date
     }</button>`;
   });
   $("#not-what-wanted").append(movies);
@@ -169,13 +171,31 @@ function fetchSongData(songData) {
       return response.json();
     })
     .then(function(responseJson) {
-      songData = responseJson;
-      console.log("first search", responseJson);
-      songNum = songData.results.trackmatches.track[0].mbid;
-      getSpecificSong(songNum);
-      getSimilarSongs(songNum);
-      formatOtherSongs(responseJson);
-    });
+      if (responseJson.results.trackmatches.track[0].mbid != "") {
+        songData = responseJson;
+        songNum = songData.results.trackmatches.track[0].mbid;
+        getSpecificSong(songNum);
+        getSimilarSongs(songNum);
+        formatOtherSongs(responseJson);
+      }
+      else {
+        console.log('no mbid worked')
+        noMbidNumber(responseJson);
+      }
+    })
+}
+
+function noMbidNumber(song) {
+  songData = song.results.trackmatches.track[0]
+  noDateRespon
+  se = `<div id="published-in">Sorry, we could not retrieve the date for that track</div>`
+  artistDisplay = `<div id="artist-name">Artist(s): ${songData.artist}`
+  artistUrl = `<a href="${songData.url}" id="listen-link" target="blank">Listen at last.fm</a>`
+  musicImg = songData.image[3]["#text"]
+  $('#results').append(noDateResponse, artistDisplay)
+  displayMusicImage(musicImg)
+  formatOtherSongs(song);
+  
 }
 
 function getSpecificSong(songNum) {
@@ -186,8 +206,6 @@ function getSpecificSong(songNum) {
       return response.json();
     })
     .then(function(responseJson) {
-      console.log("second search", responseJson);
-
       displayMusicData(responseJson);
     });
 }
@@ -204,9 +222,14 @@ function getSimilarSongs(data) {
 }
 
 function displayMusicData(musicData) {
-  $("#results").append(
-    `<div id="published-in">Published: ${musicData.track.wiki.published}</div>`
-  );
+  if ('wiki' in musicData.track) {
+    $("#results").append(
+    `<div id="published-in">Album published in: ${musicData.track.wiki.published}</div>`
+    )}
+  else {
+    $("#results").append(
+      `<div id="published-in">Sorry, we could not retrieve the date for that track</div>`)
+  }
   musicImg = musicData.track.album.image[3]["#text"];
   $("#results").append(
     `<div id="artist-name">Artist(s): ${musicData.track.artist.name}`
@@ -276,17 +299,23 @@ function handleNewSearch(searchParam) {
   $("main").on("click", ".new-search", function(event) {
     if ($("input:checked").val() == "Movie") {
       newSearch = $(this).val();
-      encodedSearch = encodeURIComponent(newSearch);
+      searchText = $(this).text();
+      textOnly = searchText.replace(/[0-9/]/g, '').replace(/-/g, '').replace(/,/g, '')
       $("#results").empty();
       $("#not-what-wanted").empty();
-      $("#user-search").val(newSearch);
+      $("#not-what-wanted").addClass('hidden');
+      $("#not-wanted-div").addClass('hidden');
+      $("#user-search").val(textOnly);
+      
 
-      fetchMovieData(encodedSearch);
+      //fetchMovieData(encodedSearch);
+      getSpecificMovie(newSearch)
     } else if ($("input:checked").val() == "Song") {
       songVal = $(this).val();
-      console.log(songVal);
+      searchText = $(this).text();
       $("#results").empty();
       $("#not-wanted-div").empty();
+      $("#user-search").val(searchText);
       getSpecificSong(songVal);
       getSimilarSongs(songVal);
     }
