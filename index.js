@@ -27,9 +27,13 @@ function handleMediaChoice() {
   // shows choices when user wants to select movie or song
   $("#search-form").submit(function(event) {
     event.preventDefault();
+    $('#results').empty();
+    $('#not-what-wanted').empty();
+    $('#see-also-text').empty();
     userSearch = $("#user-search").val();
     encodedSearch = encodeURIComponent(userSearch);
     $("#results").removeClass("hidden");
+
 
     if ($("input:checked").val() == "Movie") {
       fetchMovieData(encodedSearch);
