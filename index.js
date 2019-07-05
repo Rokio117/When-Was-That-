@@ -12,6 +12,8 @@ const similarSongUrl =
   "http://ws.audioscrobbler.com/2.0/?method=track.getsimilar";
 const songApiKey = "&api_key=5693fd68291fa577eff3066dbff9bbc2";
 const songAdditionalQs = "&format=json";
+const errorMessage = `Sorry, an error occured. Please try again later.`
+
 
 //Functions for movies and songs
 
@@ -53,10 +55,21 @@ function fetchMovieData(movieSearchData) {
     })
     .then(function(responseJson) {
       console.log("first search", responseJson);
-      movieId = responseJson.results[0].id
-      getSpecificMovie(movieId);
-      getAlternateMovieSearches(responseJson);
-    });
+      if (responseJson.results.length) {
+        movieId = responseJson.results[0].id
+        getSpecificMovie(movieId);
+        getAlternateMovieSearches(responseJson);
+      } else {
+        noResults = `<div id="no-results-message"> Sorry, we couldn't find any searches for "${$('#user-search').val()}" in ${$('input:checked').val()}s.
+        Make sure your spelling is correct, and you selected the right media type, then try again.`
+
+        $('#results').append(noResults)
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      $('#results').append(errorMessage)
+    })
 }
 
 function getSpecificMovie(data) {
@@ -115,32 +128,36 @@ function displayMovieImage(imageData) {
 }
 
 function getAlternateMovieSearches(response) {
-  console.log(response)
+  console.log('alt movie searches', response)
   altLength = response.results.length;
   altMov = [];
   if (altLength > 3) {
-    responseLength = 4
+    responseLength = 3
     $("#not-wanted-div").removeClass("hidden");
     formatAltMovies(responseLength, response);
   }
   if (altLength == 3) {
+  
     responseLength = 2;
     formatAltMovies(responseLength, response);
   }
   if (altLength === 2) {
+   
     responseLength = 1;
     $("#not-wanted-div").removeClass("hidden");
     formatAltMovies(responseLength, response);
   }
   if (altLength === 1) {
+  
     responseLength = 0;
     $("#not-wanted-div").addClass("hidden");
   }
-  console.log(altMov);
+  console.log('alternate movie object', altMov);
   displayAltMovies(altMov);
 }
 
 function formatAltMovies(movies, response) {
+  console.log(response, 'response in formatAltMovies', movies)
   if (movies !== 0) {
     for (i = 1; i <= movies; i++) {
       altMov.push({
@@ -175,28 +192,37 @@ function fetchSongData(songData) {
       return response.json();
     })
     .then(function(responseJson) {
-      if (responseJson.results.trackmatches.track[0].mbid != "") {
-        songData = responseJson;
-        songNum = songData.results.trackmatches.track[0].mbid;
-        getSpecificSong(songNum);
-        getSimilarSongs(songNum);
-        formatOtherSongs(responseJson);
-      }
-      else {
-        console.log('no mbid worked')
-        noMbidNumber(responseJson);
-      }
+      console.log('first song search json', responseJson)
+      if (responseJson.results.trackmatches.track.length) {
+        if (responseJson.results.trackmatches.track[0].mbid != "") {
+          songData = responseJson;
+          songNum = songData.results.trackmatches.track[0].mbid;
+          getSpecificSong(songNum);
+          getSimilarSongs(songNum);
+          formatOtherSongs(responseJson);
+        }
+        else {
+          console.log('no mbid worked')
+          noMbidNumber(responseJson);
+        }
+    } else {
+      noResults = `<div id="no-results-message"> Sorry, we couldn't find any searches for "${$('#user-search').val()}" in ${$('input:checked').val()}s.
+        Make sure your spelling is correct, and you selected the right media type, then try again.`
+
+        $('#results').append(noResults)
+    }
+
     })
 }
 
 function noMbidNumber(song) {
+  console.log(song)
   songData = song.results.trackmatches.track[0]
-  noDateRespon
-  se = `<div id="published-in">Sorry, we could not retrieve the date for that track</div>`
+  noDateResponse = `<div id="published-in">Sorry, we could not retrieve the date for that track</div>`
   artistDisplay = `<div id="artist-name">Artist(s): ${songData.artist}`
   artistUrl = `<a href="${songData.url}" id="listen-link" target="blank">Listen at last.fm</a>`
   musicImg = songData.image[3]["#text"]
-  $('#results').append(noDateResponse, artistDisplay)
+  $('#results').append(noDateResponse, artistDisplay, artistUrl)
   displayMusicImage(musicImg)
   formatOtherSongs(song);
   
@@ -228,7 +254,7 @@ function getSimilarSongs(data) {
 function displayMusicData(musicData) {
   if ('wiki' in musicData.track) {
     $("#results").append(
-    `<div id="published-in">Album published in: ${musicData.track.wiki.published}</div>`
+    `<div id="published-in">Most recent publication/republication: ${musicData.track.wiki.published}</div>`
     )}
   else {
     $("#results").append(
@@ -250,6 +276,7 @@ function displayMusicData(musicData) {
 }
 
 function formatOtherSongs(data) {
+  $('#not-wanted-div').removeClass('hidden')
   otherLength = data.results.trackmatches.track.length;
   if (otherLength >= 3) {
     otherSongs = 3;
@@ -319,6 +346,7 @@ function handleNewSearch(searchParam) {
       searchText = $(this).text();
       $("#results").empty();
       $("#not-wanted-div").empty();
+      $('#not-what-wanted').empty();
       $("#user-search").val(searchText);
       getSpecificSong(songVal);
       getSimilarSongs(songVal);
