@@ -12,7 +12,7 @@
 <body>
   <section id="welcome-page">
     <h1>When Was That?</h1>
-    <div>Enter a movie or song title and we will tell you when it was released.</div>
+    <div id="welcome-text">Enter a movie or song title and we will tell you when it was released.</div>
     <form>
         <input type="button" value="Let's Go!" id="lets-go-button"></input>
       </form>
@@ -20,13 +20,13 @@
   <main id="main-page" class="hidden">
     <h2>When Was That?</h2>
     <fieldset>
-      <p>Enter a Movie or Song</p>
+      <p id="directions">Enter a Movie or Song</p>
       <form id="search-form">
         <input id="user-search" type="text" required></input>
-        <label for="movie">Movie</label>
-        <input type="radio" class="radio-button" id="movie-radio" name = "media-selector" value="Movie" checked></input>
-        <label for="song">Song</label>
-        <input type="radio" class="radio-button" id="song-radio" name="media-selector" value="Song"></input>
+        <button  id="movie-button" class="selected media-button">Movie</button>
+        <!--<input type="radio" class="radio-button" id="movie-radio" name = "media-selector" value="Movie" checked></input>-->
+        <button for="song" id="song-button" class="not-selected media-button">Song</button>
+        <!--<input type="radio" class="radio-button" id="song-radio" name="media-selector" value="Song"></input>-->
         <input type="submit" value="Go!" id="search-button">
        
       </form>

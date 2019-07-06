@@ -25,6 +25,17 @@ function handleLetsGo() {
   });
 }
 
+function handleMediaChange() {
+  $('.media-button').click(function(event) {
+    event.preventDefault()
+    console.log('handleMediaChange Ran')
+  if ($(this).not('.selected')) {
+    $('.media-button').toggleClass('selected')
+    $('.media-button').toggleClass('not-selected')
+  }
+})
+}
+
 function handleMediaChoice() {
   // shows choices when user wants to select movie or song
   $("#search-form").submit(function(event) {
@@ -32,15 +43,14 @@ function handleMediaChoice() {
     $('#results').empty();
     $('#not-what-wanted').empty();
     $('#see-also-text').empty();
-    //$('#not-wanted-div').empty()
     userSearch = $("#user-search").val();
     encodedSearch = encodeURIComponent(userSearch);
     $("#results").removeClass("hidden");
 
 
-    if ($("input:checked").val() == "Movie") {
+    if ($('#movie-button').hasClass('selected')) {
       fetchMovieData(encodedSearch);
-    } else if ($("input:checked").val() == "Song") {
+    } else {
       fetchSongData(encodedSearch);
     }
   });
@@ -329,7 +339,7 @@ function displayMusicImage(musicImgSrc) {
 
 function handleNewSearch(searchParam) {
   $("main").on("click", ".new-search", function(event) {
-    if ($("input:checked").val() == "Movie") {
+    if ($('#movie-button').hasClass('selected')) {
       newSearch = $(this).val();
       searchText = $(this).text();
       textOnly = searchText.replace(/[0-9/]/g, '').replace(/-/g, '').replace(/,/g, '')
@@ -342,7 +352,7 @@ function handleNewSearch(searchParam) {
 
       //fetchMovieData(encodedSearch);
       getSpecificMovie(newSearch)
-    } else if ($("input:checked").val() == "Song") {
+    } else {
       songVal = $(this).val();
       searchText = $(this).text();
       $("#results").empty();
@@ -359,5 +369,6 @@ function callHandles() {
   handleLetsGo();
   handleMediaChoice();
   handleNewSearch();
+  handleMediaChange();
 }
 $(callHandles);

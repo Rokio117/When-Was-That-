@@ -2,12 +2,25 @@
   box-sizing: border-box;
   margin: 0;
   text-align: center;
+ 
+}
+html {
+  background-image: radial-gradient(gray, black);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+body {
+  padding: 0px;
+ 
 }
 .hidden {
   display: none;
 }
+form {
+  padding: 0px;
+}
 img {
-  width: 50%;
+  width: 40%;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -16,5 +29,72 @@ img {
 font-weight: bold;
 }
 #director {
+  display: inline;
+}
+#search-button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+fieldset {
+  border: none;
+}
+h2, h1 {
+  padding-top: 20px;
+  font-size: 2em;
+}
+h2, h1 {
+  color: black;
+  text-shadow: 0px 0px 10px gray;
+}
+#lets-go-button {
+  margin-top: 20px;
+}
+#welcome-text {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+#directions {
+  padding: 8px;
+}
+label {
+  border: 1px solid black;
+  padding: 4px;
+}
+.media-button, #user-search, #search-button {
+height: 40px;
+}
+.media-button {
+  border: none;
+  width: 60px;
+  font-size: 100%;
+}
+#user-search {
+  font-size: 100%;
+}
+#search-button {
+  width: 80px;
+}
+.selected {
+  margin: 1px solid orange;
+  background-image: radial-gradient(mediumslateblue, darkblue);
+  /*background-color: forestgreen;*/
+}
+.not-selected {
+  background-image: radial-gradient(lightpink, darkred);
+}
+#search-button {
+margin-top: 8px;
+background-image: radial-gradient(springgreen, darkgreen);
+border:none;
+}
+#see-also-text > button, #not-what-wanted > button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+#release-div {
   display: inline;
 }
