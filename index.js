@@ -7,7 +7,7 @@ const posterBaseUrl = "https://image.tmdb.org/t/p/w500/";
 
 const songBaseUrl =
   "https://ws.audioscrobbler.com/2.0/?method=track.search&track=";
-const songSearchUrl = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo";
+const songSearchUrl = "https://ws.audioscrobbler.com/2.0/?method=track.getInfo";
 const similarSongUrl =
   "https://ws.audioscrobbler.com/2.0/?method=track.getsimilar";
 const songApiKey = "&api_key=5693fd68291fa577eff3066dbff9bbc2";
@@ -32,6 +32,7 @@ function handleMediaChoice() {
     $('#results').empty();
     $('#not-what-wanted').empty();
     $('#see-also-text').empty();
+    //$('#not-wanted-div').empty()
     userSearch = $("#user-search").val();
     encodedSearch = encodeURIComponent(userSearch);
     $("#results").removeClass("hidden");
@@ -289,9 +290,9 @@ function formatOtherSongs(data) {
 }
 
 function displayOtherSongs(num, data) {
-  $("#not-what-wanted").append(`<div id="not-wanted-div"></div>`);
+  //$("#not-what-wanted").append(`<div id="not-wanted-div"></div>`);
   for (i = 1; i < num; i++) {
-    $("#not-wanted-div").append(`<button class="new-search" value="${
+    $("#not-what-wanted").append(`<button class="new-search" value="${
       data.results.trackmatches.track[i].mbid
     }">${data.results.trackmatches.track[i].name} by 
     ${data.results.trackmatches.track[i].artist}</button>`);
