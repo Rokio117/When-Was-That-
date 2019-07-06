@@ -6,10 +6,10 @@ const movieAdditionalQs = "&page=1&include_adult=false";
 const posterBaseUrl = "https://image.tmdb.org/t/p/w500/";
 
 const songBaseUrl =
-  "http://ws.audioscrobbler.com/2.0/?method=track.search&track=";
+  "https://ws.audioscrobbler.com/2.0/?method=track.search&track=";
 const songSearchUrl = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo";
 const similarSongUrl =
-  "http://ws.audioscrobbler.com/2.0/?method=track.getsimilar";
+  "https://ws.audioscrobbler.com/2.0/?method=track.getsimilar";
 const songApiKey = "&api_key=5693fd68291fa577eff3066dbff9bbc2";
 const songAdditionalQs = "&format=json";
 const errorMessage = `Sorry, an error occured. Please try again later.`
@@ -111,12 +111,12 @@ function formatMovieData(data) {
 
 function displayMovieData(release, director, cast, overView, similar, data) {
   const movieData = [
-    `<div id="release-div">Released in: <span id="year-text">${release}</span></div>`,
+    `<div id="release-div" class="identifier" >Released in: </div><span id="year-text">${release}</span>`,
     `<img  src="${displayMovieImage(data)}" alt="" id="search-image"></img>`,
-    `<div id="director"><span id="director-text">Director: ${director}</span></div>`,
-    `<div id="cast"<span id="cast-text">Cast: ${cast}</span></div>`,
-    `<p id="synopysis-div">Synopysis: ${overView} <span id="synopsis-text"></span></p>`,
-    `<div id="see-also-div">See also: <span id="see-also-text">${similar}</span></div>`,
+    `<div id="director" class="identifier">Director: </div><span id="director-text">${director}</span>`,
+    `<div id="cast" class="identifier">Cast: </div><span id="cast-text" >${cast}</span>`,
+    `<div id="synopysis-div" class="identifier">Synopysis: </div><p id="synopsis-text">${overView}</p>`,
+    `<div id="see-also-div" class="identifier">See also: </div><span id="see-also-text">${similar}</span>`,
   ];
   $('#results').append(movieData);
 }
@@ -218,8 +218,8 @@ function fetchSongData(songData) {
 function noMbidNumber(song) {
   console.log(song)
   songData = song.results.trackmatches.track[0]
-  noDateResponse = `<div id="published-in">Sorry, we could not retrieve the date for that track</div>`
-  artistDisplay = `<div id="artist-name">Artist(s): ${songData.artist}`
+  noDateResponse = `<div id="no-date">Sorry, we could not retrieve the date for that track</div>`
+  artistDisplay = `<div id="artist-name" class="identifier">Artist(s): </div><span>${songData.artist}</span>`
   artistUrl = `<a href="${songData.url}" id="listen-link" target="blank">Listen at last.fm</a>`
   musicImg = songData.image[3]["#text"]
   $('#results').append(noDateResponse, artistDisplay, artistUrl)
@@ -254,18 +254,18 @@ function getSimilarSongs(data) {
 function displayMusicData(musicData) {
   if ('wiki' in musicData.track) {
     $("#results").append(
-    `<div id="published-in">Most recent publication/republication: ${musicData.track.wiki.published}</div>`
+    `<div id="published-in" class="identifier">Most recent publication/republication: </div><span>${musicData.track.wiki.published}</span>`
     )}
   else {
     $("#results").append(
-      `<div id="published-in">Sorry, we could not retrieve the date for that track</div>`)
+      `<div id="no-date">Sorry, we could not retrieve the date for that track</div>`)
   }
   musicImg = musicData.track.album.image[3]["#text"];
   $("#results").append(
-    `<div id="artist-name">Artist(s): ${musicData.track.artist.name}`
+    `<div id="artist-name" class="identifier">Artist(s): </div><span>${musicData.track.artist.name}</span>`
   );
   $("#results").append(
-    `<div id="album-name">Album: ${musicData.track.album.title}`
+    `<div id="album-name" class="identifier">Album: </div><span>${musicData.track.album.title}</span>`
   );
   $("#results").append(
     `<a href="${
