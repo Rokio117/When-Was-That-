@@ -44,6 +44,8 @@ function handleMediaChoice() {
     $('#not-what-wanted').empty();
     $('#see-also-text').empty();
     userSearch = $("#user-search").val();
+    $('#user-search').val('')
+    $('#user-search').attr('placeholder', userSearch)
     encodedSearch = encodeURIComponent(userSearch);
     $("#results").removeClass("hidden");
 
@@ -71,7 +73,7 @@ function fetchMovieData(movieSearchData) {
         getSpecificMovie(movieId);
         getAlternateMovieSearches(responseJson);
       } else {
-        noResults = `<div id="no-results-message"> Sorry, we couldn't find any searches for "${$('#user-search').val()}" in ${$('input:checked').val()}s.
+        noResults = `<div id="no-results-message"> Sorry, we couldn't find any searches for "${$('#user-search').val()}".
         Make sure your spelling is correct, and you selected the right media type, then try again.`
 
         $('#results').append(noResults)
@@ -122,12 +124,12 @@ function formatMovieData(data) {
 
 function displayMovieData(release, director, cast, overView, similar, data) {
   const movieData = [
-    `<div id="release-div" class="identifier" >Released in: </div><span id="year-text">${release}</span>`,
+    `<div id="release-div" class="identifier" >Released in: </div><span id="year-text" class="response">${release}</span>`,
     `<img  src="${displayMovieImage(data)}" alt="" id="search-image"></img>`,
-    `<div id="director" class="identifier">Director: </div><span id="director-text">${director}</span>`,
-    `<div id="cast" class="identifier">Cast: </div><span id="cast-text" >${cast}</span>`,
-    `<div id="synopysis-div" class="identifier">Synopysis: </div><p id="synopsis-text">${overView}</p>`,
-    `<div id="see-also-div" class="identifier">See also: </div><span id="see-also-text">${similar}</span>`,
+    `<div id="director" class="identifier">Director: </div><span id="director-text" class="response">${director}</span>`,
+    `<div id="cast" class="identifier">Cast: </div><span id="cast-text" class="response">${cast}</span>`,
+    `<div id="synopysis-div" class="identifier">Synopysis: </div><p id="synopsis-text" class="response">${overView}</p>`,
+    `<div id="see-also-div" class="identifier">See also: </div><span id="see-also-text" class="response">${similar}</span>`,
   ];
   $('#results').append(movieData);
 }
@@ -185,7 +187,7 @@ function formatAltMovies(movies, response) {
 function displayAltMovies(altMovies) {
 
   const movies = altMovies.map(function(movie) {
-    return `<button class="new-search" value="${movie.id}">${movie.name}, ${
+    return `<button class="new-search" value="${movie.id}" class="response">${movie.name}, ${
       movie.date
     }</button>`;
   });
@@ -217,7 +219,7 @@ function fetchSongData(songData) {
           noMbidNumber(responseJson);
         }
     } else {
-      noResults = `<div id="no-results-message"> Sorry, we couldn't find any searches for "${$('#user-search').val()}" in ${$('input:checked').val()}s.
+      noResults = `<div id="no-results-message" class="response"> Sorry, we couldn't find any searches for "${$('#user-search').val()}" in ${$('input:checked').val()}s.
         Make sure your spelling is correct, and you selected the right media type, then try again.`
 
         $('#results').append(noResults)
@@ -229,9 +231,9 @@ function fetchSongData(songData) {
 function noMbidNumber(song) {
   console.log(song)
   songData = song.results.trackmatches.track[0]
-  noDateResponse = `<div id="no-date">Sorry, we could not retrieve the date for that track</div>`
-  artistDisplay = `<div id="artist-name" class="identifier">Artist(s): </div><span>${songData.artist}</span>`
-  artistUrl = `<a href="${songData.url}" id="listen-link" target="blank">Listen at last.fm</a>`
+  noDateResponse = `<div id="no-date" class="response">Sorry, we could not retrieve the date for that track</div>`
+  artistDisplay = `<div id="artist-name" class="identifier">Artist(s): </div><span class="response">${songData.artist}</span>`
+  artistUrl = `<a href="${songData.url}" id="listen-link" target="blank" class="response">Listen at last.fm</a>`
   musicImg = songData.image[3]["#text"]
   $('#results').append(noDateResponse, artistDisplay, artistUrl)
   displayMusicImage(musicImg)
@@ -265,23 +267,23 @@ function getSimilarSongs(data) {
 function displayMusicData(musicData) {
   if ('wiki' in musicData.track) {
     $("#results").append(
-    `<div id="published-in" class="identifier">Most recent publication/republication: </div><span>${musicData.track.wiki.published}</span>`
+    `<div id="published-in" class="identifier">Most recent publication/republication: </div><span class="response">${musicData.track.wiki.published}</span>`
     )}
   else {
     $("#results").append(
-      `<div id="no-date">Sorry, we could not retrieve the date for that track</div>`)
+      `<div id="no-date" class="response">Sorry, we could not retrieve the date for that track</div>`)
   }
   musicImg = musicData.track.album.image[3]["#text"];
   $("#results").append(
-    `<div id="artist-name" class="identifier">Artist(s): </div><span>${musicData.track.artist.name}</span>`
+    `<div id="artist-name" class="identifier">Artist(s): </div><span class="response">${musicData.track.artist.name}</span>`
   );
   $("#results").append(
-    `<div id="album-name" class="identifier">Album: </div><span>${musicData.track.album.title}</span>`
+    `<div id="album-name" class="identifier">Album: </div><span class="response">${musicData.track.album.title}</span>`
   );
   $("#results").append(
     `<a href="${
       musicData.track.url
-    }" id="listen-link" target="blank">Listen at last.fm</a>`
+    }" id="listen-link" target="blank" class="response">Listen at last.fm</a>`
   );
   displayMusicImage(musicImg);
 }
@@ -302,7 +304,7 @@ function formatOtherSongs(data) {
 function displayOtherSongs(num, data) {
   //$("#not-what-wanted").append(`<div id="not-wanted-div"></div>`);
   for (i = 1; i < num; i++) {
-    $("#not-what-wanted").append(`<button class="new-search" value="${
+    $("#not-what-wanted").append(`<button class="new-search" class="response" value="${
       data.results.trackmatches.track[i].mbid
     }">${data.results.trackmatches.track[i].name} by 
     ${data.results.trackmatches.track[i].artist}</button>`);
@@ -324,7 +326,7 @@ function formatSimilarSongs(simData) {
 function displaySimilarSongs(number, data) {
   $("#results").append(`<div id="try-similar">Similar Songs: </div>`);
   for (i = 0; i < number; i++) {
-    $("#try-similar").append(`<button class="new-search" value="${
+    $("#try-similar").append(`<button class="new-search" class="response" value="${
       data.similartracks.track[i].mbid
     }">${data.similartracks.track[i].name} by 
     ${data.similartracks.track[i].artist.name}</button>`);
@@ -342,12 +344,13 @@ function handleNewSearch(searchParam) {
     if ($('#movie-button').hasClass('selected')) {
       newSearch = $(this).val();
       searchText = $(this).text();
-      textOnly = searchText.replace(/[0-9/]/g, '').replace(/-/g, '').replace(/,/g, '')
+      textOnly = searchText.replace(/-/g, '').replace(/,/g, '')
       $("#results").empty();
       $("#not-what-wanted").empty();
       $("#not-what-wanted").addClass('hidden');
       $("#not-wanted-div").addClass('hidden');
-      $("#user-search").val(textOnly);
+      $('#user-search').val('');
+      $("#user-search").attr('placeholder', searchText);
       
 
       //fetchMovieData(encodedSearch);
@@ -358,7 +361,7 @@ function handleNewSearch(searchParam) {
       $("#results").empty();
       $("#not-wanted-div").empty();
       $('#not-what-wanted').empty();
-      $("#user-search").val(searchText);
+      $("#user-search").attr('placeholder', searchText)
       getSpecificSong(songVal);
       getSimilarSongs(songVal);
     }

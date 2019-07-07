@@ -5,6 +5,8 @@
   <meta name="description" content="Find out the year your favorite movie or song was released.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Acme|Russo+One&display=swap" rel="stylesheet">
   <title>When Was That?</title>
   <link rel="stylesheet" href="index.css">
   <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
@@ -22,10 +24,10 @@
     <fieldset>
       <p id="directions">Enter a Movie or Song</p>
       <form id="search-form">
-        <input id="user-search" type="text" required></input>
-        <button  id="movie-button" class="selected media-button">Movie</button>
+        <input id="user-search" type="text" placeholder="i.e. The Avengers" required></input>
+        <button  id="movie-button" type="button" class="selected media-button">Movie</button>
         <!--<input type="radio" class="radio-button" id="movie-radio" name = "media-selector" value="Movie" checked></input>-->
-        <button for="song" id="song-button" class="not-selected media-button">Song</button>
+        <button for="song" id="song-button" type="button" class="not-selected media-button">Song</button>
         <!--<input type="radio" class="radio-button" id="song-radio" name="media-selector" value="Song"></input>-->
         <input type="submit" value="Go!" id="search-button">
        
