@@ -4,13 +4,19 @@
   text-align: center;
  
 }
-html {
-  background-image: radial-gradient(gray, black);
+body {
+  height: 100%;
+  background: radial-gradient(gray, black) center center fixed;
   background-repeat: no-repeat;
   background-size: cover;
+  
+  padding: 0px;
 }
 body {
   padding: 0px;
+}
+input:hover, button:hover {
+  cursor: pointer;
 }
 .response, #welcome-text, #directions {
   font-family: 'Acme', sans-serif;
@@ -105,4 +111,15 @@ font-family: 'Russo One', sans-serif;
 }
 #release-div {
   display: inline;
+}
+.new-search {
+  font-family: 'Acme', sans-serif;
+  font-size: 15px;
+  background-color: silver;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin: 10px;
+  color: blue;
+  border: 1px silver;
+  border-radius: 3px;
 }
