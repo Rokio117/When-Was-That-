@@ -118,6 +118,8 @@ function formatMovieData(data) {
     simThree = data.similar.results[2];
     simThreeButton = `<button class="new-search" value="${simThree.id}">${simThree.title}</button>`;
     simList = `${simOneButton}${simTwoButton}${simThreeButton}`;
+  } else {
+    simList = `<div class="response">Sorry, we couldn't find any movies similar to ${data.title}</div>`
   }
   displayMovieData(releaseDate, director, castList, overView, simList, data);
 }
@@ -170,6 +172,7 @@ function getAlternateMovieSearches(response) {
 }
 
 function formatAltMovies(movies, response) {
+  $("#not-wanted-div").removeClass("hidden");
   console.log(response, 'response in formatAltMovies', movies)
   if (movies !== 0) {
     for (i = 1; i <= movies; i++) {
