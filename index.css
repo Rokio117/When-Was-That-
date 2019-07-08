@@ -6,7 +6,7 @@
 body {
   height: 100vh;
   overflow-y: auto;
-  background: radial-gradient(gray, dimgray, rgb(37, 37, 37), black) center
+  background: linear-gradient(0.25turn, black, rgb(37,37,37),dimgray, gray, dimgray, rgb(37, 37, 37), black) center
     center fixed;
   background-repeat: no-repeat;
   background-size: cover;
@@ -45,7 +45,6 @@ img {
 .identifier {
   font-weight: bold;
   font-family: "Russo One", sans-serif;
-
   margin: 10px;
 }
 #director {
