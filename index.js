@@ -327,7 +327,7 @@ function formatSimilarSongs(simData) {
 }
 
 function displaySimilarSongs(number, data) {
-  $("#results").append(`<div id="try-similar">Similar Songs: </div>`);
+  $("#results").append(`<div>Similar songs:</div><div id="try-similar"></div>`);
   for (i = 0; i < number; i++) {
     $("#try-similar").append(`<button class="new-search" class="response" value="${
       data.similartracks.track[i].mbid
