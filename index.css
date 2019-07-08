@@ -64,9 +64,9 @@ h1 {
   padding-top: 20px;
   font-size: 30px;
   font-family: "Russo One", sans-serif;
-  color: silver;
+  color: black;
 
-  text-shadow: 3px 3px 5px black;
+  text-shadow: 3px 3px 5px saddlebrown;
 }
 #lets-go-button {
   margin-top: 20px;
@@ -95,6 +95,7 @@ label {
   margin-top: 6px;
   width: 70px;
   font-size: 100%;
+  border-radius: 8px;
 }
 .media-button:hover {
   background: radial-gradient(darkslategray, black);
@@ -123,6 +124,7 @@ label {
   margin-top: 8px;
   background-image: radial-gradient(springgreen, darkgreen);
   border: none;
+  border-radius: 8px;
 }
 #search-button:hover,
 #lets-go-button:hover {

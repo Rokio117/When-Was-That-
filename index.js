@@ -68,6 +68,7 @@ function fetchMovieData(movieSearchData) {
         getSpecificMovie(movieId);
         getAlternateMovieSearches(responseJson);
       } else {
+        $('#not-wanted-div').addClass('hidden')
         noResults = `<div id="no-results-message"> Sorry, we couldn't find any searches for that".
         Make sure your spelling is correct, and you selected the right media type, then try again.`;
 
@@ -127,7 +128,7 @@ function formatMovieData(data) {
 
 function displayMovieData(release, director, cast, overView, similar, data) {
   const movieData = [
-    `<div id="release-div" class="identifier" >Released in: </div><span id="year-text" class="response">${release}</span>`,
+    `<div id="release-div" class="identifier" >Released: </div><span id="year-text" class="response">${release}</span>`,
     `<img  src="${displayMovieImage(data)}" alt="${
       data.title
     } poster" id="search-image"></img>`,
