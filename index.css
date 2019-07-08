@@ -20,9 +20,10 @@ body {
 input:hover, button:hover {
   cursor: pointer;
 }
-.response, #welcome-text, #directions {
+.response, #welcome-text, #directions, #no-results-message {
   font-family: 'Acme', sans-serif;
   color: silver;
+  text-shadow: 1px 1px 1px black;
 }
 .hidden {
   display: none;
@@ -35,10 +36,14 @@ img {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .identifier {
 font-weight: bold;
 font-family: 'Russo One', sans-serif;
+text-shadow: 1px 1px 1px silver;
+margin: 10px;
 }
 #director {
   display: inline;
@@ -83,9 +88,12 @@ height: 40px;
 font-family: 'Russo One', sans-serif;
 }
 .media-button {
-  
+  margin-top: 6px;
   width: 70px;
   font-size: 100%;
+}
+.media-button:hover {
+  background: radial-gradient(darkslategray, black);
 }
 #user-search {
   font-size: 100%;
@@ -112,6 +120,9 @@ font-family: 'Russo One', sans-serif;
   background-image: radial-gradient(springgreen, darkgreen);
   border:none;
 }
+#search-button:hover, #lets-go-button:hover {
+  background-image: radial-gradient(lightgreen, springgreen);
+}
 #lets-go-button {
   margin-bottom: 15px;
 }
@@ -123,16 +134,22 @@ font-family: 'Russo One', sans-serif;
 #release-div {
   display: inline;
 }
+#artist-info-section, #album-info-section {
+  display: flex;
+  justify-content: center;
+}
 .new-search {
   font-family: 'Acme', sans-serif;
   font-size: 15px;
-  background-color: silver;
-  padding-left: 4px;
-  padding-right: 4px;
+  background-color: black;
+  padding: 6px;
   margin: 10px;
+  color: silver;
+  border-radius: 6px;
+}
+.new-search:hover {
+  background: silver;
   color: blue;
-  border: 1px silver;
-  border-radius: 3px;
 }
 #listen-link {
   color: blue;
@@ -150,7 +167,7 @@ font-family: 'Russo One', sans-serif;
     font-size: 60px;
     margin-top: 60px;
   }
-  #welcome-text, #directions, .media-button  {
+  #welcome-text, #directions, .media-button, #no-results-message  {
     font-size: 25px;
   }
   #search-button, #lets-go-button {
@@ -189,8 +206,20 @@ font-family: 'Russo One', sans-serif;
   .music-image {
     width: 40%;
   }
+  .selected {
+    border: 5px solid saddlebrown;
+  }
+  .new-search {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .identifier {
+    margin: 15px;
+    }
 }
 
 @media screen and (min-width: 1100px) {
-
+img, .music-image {
+  width: 20%;
+}
 }

@@ -73,7 +73,7 @@ function fetchMovieData(movieSearchData) {
         getSpecificMovie(movieId);
         getAlternateMovieSearches(responseJson);
       } else {
-        noResults = `<div id="no-results-message"> Sorry, we couldn't find any searches for "${$('#user-search').val()}".
+        noResults = `<div id="no-results-message"> Sorry, we couldn't find any searches for that".
         Make sure your spelling is correct, and you selected the right media type, then try again.`
 
         $('#results').append(noResults)
@@ -222,7 +222,7 @@ function fetchSongData(songData) {
           noMbidNumber(responseJson);
         }
     } else {
-      noResults = `<div id="no-results-message" class="response"> Sorry, we couldn't find any searches for "${$('#user-search').val()}" in ${$('input:checked').val()}s.
+      noResults = `<div id="no-results-message" class="response"> Sorry, we couldn't find any searches for that.
         Make sure your spelling is correct, and you selected the right media type, then try again.`
 
         $('#results').append(noResults)
@@ -278,10 +278,10 @@ function displayMusicData(musicData) {
   }
   musicImg = musicData.track.album.image[3]["#text"];
   $("#results").append(
-    `<div id="artist-name" class="identifier">Artist(s): </div><span class="response">${musicData.track.artist.name}</span>`
+    `<section id="artist-info-section><div id="artist-name" class="identifier">Artist(s): </div><span class="response" id="artist-info">${musicData.track.artist.name}</span></section>`
   );
   $("#results").append(
-    `<div id="album-name" class="identifier">Album: </div><span class="response">${musicData.track.album.title}</span>`
+    `<section id="album-info-section><div id="album-name" class="identifier">Album: </div><span class="response">${musicData.track.album.title}</span></section>`
   );
   displayMusicImage(musicImg);
   $("#results").append(
@@ -371,6 +371,8 @@ function handleNewSearch(searchParam) {
     }
   });
 }
+
+
 
 function callHandles() {
   handleLetsGo();
