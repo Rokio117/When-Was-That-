@@ -283,12 +283,13 @@ function displayMusicData(musicData) {
   $("#results").append(
     `<div id="album-name" class="identifier">Album: </div><span class="response">${musicData.track.album.title}</span>`
   );
+  displayMusicImage(musicImg);
   $("#results").append(
     `<a href="${
       musicData.track.url
     }" id="listen-link" target="blank" class="response">Listen at last.fm</a>`
   );
-  displayMusicImage(musicImg);
+  
 }
 
 function formatOtherSongs(data) {
@@ -327,7 +328,7 @@ function formatSimilarSongs(simData) {
 }
 
 function displaySimilarSongs(number, data) {
-  $("#results").append(`<div>Similar songs:</div><div id="try-similar"></div>`);
+  $("#results").append(`<div class="identifier">Similar songs:</div><div id="try-similar"></div>`);
   for (i = 0; i < number; i++) {
     $("#try-similar").append(`<button class="new-search" class="response" value="${
       data.similartracks.track[i].mbid
@@ -337,7 +338,7 @@ function displaySimilarSongs(number, data) {
 }
 
 function displayMusicImage(musicImgSrc) {
-  $("#results").append(`<img src="${musicImgSrc}"</img>`);
+  $("#results").append(`<img class ="music-image" src="${musicImgSrc}"</img>`);
 }
 
 //IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
