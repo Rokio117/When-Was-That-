@@ -12,13 +12,11 @@ const similarSongUrl =
   "https://ws.audioscrobbler.com/2.0/?method=track.getsimilar";
 const songApiKey = "&api_key=5693fd68291fa577eff3066dbff9bbc2";
 const songAdditionalQs = "&format=json";
-const errorMessage = `Sorry, an error occured. Please try again later.`
-
+const errorMessage = `Sorry, an error occured. Please try again later.`;
 
 //Functions for movies and songs
 
 function handleLetsGo() {
-  // takes user to the next page
   $("#lets-go-button").click(function(event) {
     $("#main-page").removeClass("hidden");
     $("#welcome-page").addClass("hidden");
@@ -26,31 +24,29 @@ function handleLetsGo() {
 }
 
 function handleMediaChange() {
-  $('.media-button').click(function(event) {
-    event.preventDefault()
-    console.log('handleMediaChange Ran')
-  if ($(this).not('.selected')) {
-    $('.media-button').toggleClass('selected')
-    $('.media-button').toggleClass('not-selected')
-  }
-})
+  $(".media-button").click(function(event) {
+    event.preventDefault();
+    if ($(this).not(".selected")) {
+      $(".media-button").toggleClass("selected");
+      $(".media-button").toggleClass("not-selected");
+    }
+  });
 }
 
 function handleMediaChoice() {
   // shows choices when user wants to select movie or song
   $("#search-form").submit(function(event) {
     event.preventDefault();
-    $('#results').empty();
-    $('#not-what-wanted').empty();
-    $('#see-also-text').empty();
+    $("#results").empty();
+    $("#not-what-wanted").empty();
+    $("#see-also-text").empty();
     userSearch = $("#user-search").val();
-    $('#user-search').val('')
-    $('#user-search').attr('placeholder', userSearch)
+    $("#user-search").val("");
+    $("#user-search").attr("placeholder", userSearch);
     encodedSearch = encodeURIComponent(userSearch);
     $("#results").removeClass("hidden");
 
-
-    if ($('#movie-button').hasClass('selected')) {
+    if ($("#movie-button").hasClass("selected")) {
       fetchMovieData(encodedSearch);
     } else {
       fetchSongData(encodedSearch);
@@ -67,33 +63,30 @@ function fetchMovieData(movieSearchData) {
       return response.json();
     })
     .then(function(responseJson) {
-      console.log("first search", responseJson);
       if (responseJson.results.length) {
-        movieId = responseJson.results[0].id
+        movieId = responseJson.results[0].id;
         getSpecificMovie(movieId);
         getAlternateMovieSearches(responseJson);
       } else {
         noResults = `<div id="no-results-message"> Sorry, we couldn't find any searches for that".
-        Make sure your spelling is correct, and you selected the right media type, then try again.`
+        Make sure your spelling is correct, and you selected the right media type, then try again.`;
 
-        $('#results').append(noResults)
+        $("#results").append(noResults);
       }
     })
     .catch(error => {
-      console.log(error)
-      $('#results').append(errorMessage)
-    })
+      console.log(error);
+      $("#results").append(errorMessage);
+    });
 }
 
 function getSpecificMovie(data) {
-  //movieId = data.results[0].id;
   idUrl = `${movieSearchUrl}${data}?${movieApiKey}&language=en-US&append_to_response=similar,credits`;
   fetch(idUrl)
     .then(function(response) {
       return response.json();
     })
     .then(function(responseJson) {
-      console.log("specific search", responseJson);
       formatMovieData(responseJson);
     });
 }
@@ -112,14 +105,22 @@ function formatMovieData(data) {
   overView = data.overview;
   if (data.similar.results.length >= 3) {
     simOne = data.similar.results[0];
-    simOneButton = `<button class="new-search" value="${simOne.id}">${simOne.title}</button>`;
+    simOneButton = `<button class="new-search" value="${simOne.id}">${
+      simOne.title
+    }</button>`;
     simTwo = data.similar.results[1];
-    simTwoButton = `<button class="new-search" value="${simTwo.id}">${simTwo.title}</button>`;
+    simTwoButton = `<button class="new-search" value="${simTwo.id}">${
+      simTwo.title
+    }</button>`;
     simThree = data.similar.results[2];
-    simThreeButton = `<button class="new-search" value="${simThree.id}">${simThree.title}</button>`;
+    simThreeButton = `<button class="new-search" value="${simThree.id}">${
+      simThree.title
+    }</button>`;
     simList = `${simOneButton}${simTwoButton}${simThreeButton}`;
   } else {
-    simList = `<div class="response">Sorry, we couldn't find any movies similar to ${data.title}</div>`
+    simList = `<div class="response">Sorry, we couldn't find any movies similar to ${
+      data.title
+    }</div>`;
   }
   displayMovieData(releaseDate, director, castList, overView, simList, data);
 }
@@ -127,13 +128,15 @@ function formatMovieData(data) {
 function displayMovieData(release, director, cast, overView, similar, data) {
   const movieData = [
     `<div id="release-div" class="identifier" >Released in: </div><span id="year-text" class="response">${release}</span>`,
-    `<img  src="${displayMovieImage(data)}" alt="" id="search-image"></img>`,
+    `<img  src="${displayMovieImage(data)}" alt="${
+      data.title
+    } poster" id="search-image"></img>`,
     `<div id="director" class="identifier">Director: </div><span id="director-text" class="response">${director}</span>`,
     `<div id="cast" class="identifier">Cast: </div><span id="cast-text" class="response">${cast}</span>`,
     `<div id="synopysis-div" class="identifier">Synopysis: </div><p id="synopsis-text" class="response">${overView}</p>`,
-    `<div id="see-also-div" class="identifier">See also: </div><span id="see-also-text" class="response">${similar}</span>`,
+    `<div id="see-also-div" class="identifier">See also: </div><span id="see-also-text" class="response">${similar}</span>`
   ];
-  $('#results').append(movieData);
+  $("#results").append(movieData);
 }
 
 function displayMovieImage(imageData) {
@@ -143,37 +146,31 @@ function displayMovieImage(imageData) {
 }
 
 function getAlternateMovieSearches(response) {
-  console.log('alt movie searches', response)
   altLength = response.results.length;
   altMov = [];
   if (altLength > 3) {
-    responseLength = 3
+    responseLength = 3;
     $("#not-wanted-div").removeClass("hidden");
     formatAltMovies(responseLength, response);
   }
   if (altLength == 3) {
-  
     responseLength = 2;
     formatAltMovies(responseLength, response);
   }
   if (altLength === 2) {
-   
     responseLength = 1;
     $("#not-wanted-div").removeClass("hidden");
     formatAltMovies(responseLength, response);
   }
   if (altLength === 1) {
-  
     responseLength = 0;
     $("#not-wanted-div").addClass("hidden");
   }
-  console.log('alternate movie object', altMov);
   displayAltMovies(altMov);
 }
 
 function formatAltMovies(movies, response) {
   $("#not-wanted-div").removeClass("hidden");
-  console.log(response, 'response in formatAltMovies', movies)
   if (movies !== 0) {
     for (i = 1; i <= movies; i++) {
       altMov.push({
@@ -185,19 +182,14 @@ function formatAltMovies(movies, response) {
   }
 }
 
-
-
 function displayAltMovies(altMovies) {
-
   const movies = altMovies.map(function(movie) {
-    return `<button class="new-search" value="${movie.id}" class="response">${movie.name}, ${
-      movie.date
-    }</button>`;
+    return `<button class="new-search" value="${
+      movie.id
+    }" class="response">${movie.name}, ${movie.date}</button>`;
   });
   $("#not-what-wanted").append(movies);
-    
 }
-
 
 //Song search functions
 
@@ -208,7 +200,6 @@ function fetchSongData(songData) {
       return response.json();
     })
     .then(function(responseJson) {
-      console.log('first song search json', responseJson)
       if (responseJson.results.trackmatches.track.length) {
         if (responseJson.results.trackmatches.track[0].mbid != "") {
           songData = responseJson;
@@ -216,37 +207,34 @@ function fetchSongData(songData) {
           getSpecificSong(songNum);
           getSimilarSongs(songNum);
           formatOtherSongs(responseJson);
-        }
-        else {
-          console.log('no mbid worked')
+        } else {
           noMbidNumber(responseJson);
         }
-    } else {
-      noResults = `<div id="no-results-message" class="response"> Sorry, we couldn't find any searches for that.
-        Make sure your spelling is correct, and you selected the right media type, then try again.`
-
-        $('#results').append(noResults)
-    }
-
-    })
+      } else {
+        noResults = `<div id="no-results-message" class="response"> Sorry, we couldn't find any searches for that.
+        Make sure your spelling is correct, and you selected the right media type, then try again.`;
+        $("#results").append(noResults);
+      }
+    });
 }
 
 function noMbidNumber(song) {
-  console.log(song)
-  songData = song.results.trackmatches.track[0]
-  noDateResponse = `<div id="no-date" class="response">Sorry, we could not retrieve the date for that track</div>`
-  artistDisplay = `<div id="artist-name" class="identifier">Artist(s): </div><span class="response">${songData.artist}</span>`
-  artistUrl = `<a href="${songData.url}" id="listen-link" target="blank" class="response">Listen at last.fm</a>`
-  musicImg = songData.image[3]["#text"]
-  $('#results').append(noDateResponse, artistDisplay, artistUrl)
-  displayMusicImage(musicImg)
+  songData = song.results.trackmatches.track[0];
+  noDateResponse = `<div id="no-date" class="response">Sorry, we could not retrieve the date for that track</div>`;
+  artistDisplay = `<div id="artist-name" class="identifier">Artist(s): </div><span class="response">${
+    songData.artist
+  }</span>`;
+  artistUrl = `<a href="${
+    songData.url
+  }" id="listen-link" target="blank" class="response">Listen at last.fm</a>`;
+  musicImg = songData.image[3]["#text"];
+  $("#results").append(noDateResponse, artistDisplay, artistUrl);
+  displayMusicImage(musicImg);
   formatOtherSongs(song);
-  
 }
 
 function getSpecificSong(songNum) {
   songIdUrl = `${songSearchUrl}${songApiKey}&mbid=${songNum}${songAdditionalQs}`;
-
   fetch(songIdUrl)
     .then(function(response) {
       return response.json();
@@ -268,32 +256,38 @@ function getSimilarSongs(data) {
 }
 
 function displayMusicData(musicData) {
-  if ('wiki' in musicData.track) {
+  if ("wiki" in musicData.track) {
     $("#results").append(
-    `<div id="published-in" class="identifier">Most recent publication/republication: </div><span class="response">${musicData.track.wiki.published}</span>`
-    )}
-  else {
+      `<div id="published-in" class="identifier">Most recent publication/republication: </div><span class="response">${
+        musicData.track.wiki.published
+      }</span>`
+    );
+  } else {
     $("#results").append(
-      `<div id="no-date" class="response">Sorry, we could not retrieve the date for that track</div>`)
+      `<div id="no-date" class="response">Sorry, we could not retrieve the date for that track</div>`
+    );
   }
   musicImg = musicData.track.album.image[3]["#text"];
   $("#results").append(
-    `<section id="artist-info-section><div id="artist-name" class="identifier">Artist(s): </div><span class="response" id="artist-info">${musicData.track.artist.name}</span></section>`
+    `<section id="artist-info-section><div id="artist-name" class="identifier">Artist(s): </div><span class="response" id="artist-info">${
+      musicData.track.artist.name
+    }</span></section>`
   );
   $("#results").append(
-    `<section id="album-info-section><div id="album-name" class="identifier">Album: </div><span class="response">${musicData.track.album.title}</span></section>`
+    `<section id="album-info-section><div id="album-name" class="identifier">Album: </div><span class="response">${
+      musicData.track.album.title
+    }</span></section>`
   );
-  displayMusicImage(musicImg);
+  displayMusicImage(musicImg, musicData);
   $("#results").append(
     `<a href="${
       musicData.track.url
     }" id="listen-link" target="blank" class="response">Listen at last.fm</a>`
   );
-  
 }
 
 function formatOtherSongs(data) {
-  $('#not-wanted-div').removeClass('hidden')
+  $("#not-wanted-div").removeClass("hidden");
   otherLength = data.results.trackmatches.track.length;
   if (otherLength >= 3) {
     otherSongs = 3;
@@ -306,9 +300,9 @@ function formatOtherSongs(data) {
 }
 
 function displayOtherSongs(num, data) {
-  //$("#not-what-wanted").append(`<div id="not-wanted-div"></div>`);
   for (i = 1; i < num; i++) {
-    $("#not-what-wanted").append(`<button class="new-search" class="response" value="${
+    $("#not-what-wanted")
+      .append(`<button class="new-search" class="response" value="${
       data.results.trackmatches.track[i].mbid
     }">${data.results.trackmatches.track[i].name} by 
     ${data.results.trackmatches.track[i].artist}</button>`);
@@ -328,51 +322,54 @@ function formatSimilarSongs(simData) {
 }
 
 function displaySimilarSongs(number, data) {
-  $("#results").append(`<div class="identifier">Similar songs:</div><div id="try-similar"></div>`);
+  $("#results").append(
+    `<div class="identifier">Similar songs:</div><div id="try-similar"></div>`
+  );
   for (i = 0; i < number; i++) {
-    $("#try-similar").append(`<button class="new-search" class="response" value="${
+    $("#try-similar")
+      .append(`<button class="new-search" class="response" value="${
       data.similartracks.track[i].mbid
     }">${data.similartracks.track[i].name} by 
     ${data.similartracks.track[i].artist.name}</button>`);
   }
 }
 
-function displayMusicImage(musicImgSrc) {
-  $("#results").append(`<img class ="music-image" src="${musicImgSrc}"</img>`);
+function displayMusicImage(musicImgSrc, data) {
+  $("#results").append(
+    `<img class ="music-image" src="${musicImgSrc}" alt="${
+      data.track.album.title
+    } album cover"</img>`
+  );
 }
 
-//IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+//New search functions
 
 function handleNewSearch(searchParam) {
   $("main").on("click", ".new-search", function(event) {
-    if ($('#movie-button').hasClass('selected')) {
+    if ($("#movie-button").hasClass("selected")) {
       newSearch = $(this).val();
       searchText = $(this).text();
-      textOnly = searchText.replace(/-/g, '').replace(/,/g, '')
+      textOnly = searchText.replace(/-/g, "").replace(/,/g, "");
       $("#results").empty();
       $("#not-what-wanted").empty();
-      $("#not-what-wanted").addClass('hidden');
-      $("#not-wanted-div").addClass('hidden');
-      $('#user-search').val('');
-      $("#user-search").attr('placeholder', searchText);
-      
+      $("#not-what-wanted").addClass("hidden");
+      $("#not-wanted-div").addClass("hidden");
+      $("#user-search").val("");
+      $("#user-search").attr("placeholder", searchText);
 
-      //fetchMovieData(encodedSearch);
-      getSpecificMovie(newSearch)
+      getSpecificMovie(newSearch);
     } else {
       songVal = $(this).val();
       searchText = $(this).text();
       $("#results").empty();
       $("#not-wanted-div").empty();
-      $('#not-what-wanted').empty();
-      $("#user-search").attr('placeholder', searchText)
+      $("#not-what-wanted").empty();
+      $("#user-search").attr("placeholder", searchText);
       getSpecificSong(songVal);
       getSimilarSongs(songVal);
     }
   });
 }
-
-
 
 function callHandles() {
   handleLetsGo();

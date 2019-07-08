@@ -2,26 +2,29 @@
   box-sizing: border-box;
   margin: 0;
   text-align: center;
- 
 }
 body {
   height: 100vh;
   overflow-y: auto;
-  background: radial-gradient( gray, dimgray, rgb(37,37,37), black  )center center fixed;
-  /*background: url(https://images.unsplash.com/photo-1464639351491-a172c2aa2911?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80) no-repeat center center fixed;*/
+  background: radial-gradient(gray, dimgray, rgb(37, 37, 37), black) center
+    center fixed;
   background-repeat: no-repeat;
   background-size: cover;
-  
+
   padding: 0px;
 }
 body {
   padding: 15px;
 }
-input:hover, button:hover {
+input:hover,
+button:hover {
   cursor: pointer;
 }
-.response, #welcome-text, #directions, #no-results-message {
-  font-family: 'Acme', sans-serif;
+.response,
+#welcome-text,
+#directions,
+#no-results-message {
+  font-family: "Acme", sans-serif;
   color: silver;
   text-shadow: 1px 1px 1px black;
 }
@@ -40,10 +43,10 @@ img {
   margin-bottom: 20px;
 }
 .identifier {
-font-weight: bold;
-font-family: 'Russo One', sans-serif;
-text-shadow: 1px 1px 1px silver;
-margin: 10px;
+  font-weight: bold;
+  font-family: "Russo One", sans-serif;
+
+  margin: 10px;
 }
 #director {
   display: inline;
@@ -56,13 +59,14 @@ margin: 10px;
 fieldset {
   border: none;
 }
-h2, h1 {
+h2,
+h1 {
   margin-top: 40px;
   padding-top: 20px;
   font-size: 30px;
-  font-family: 'Russo One', sans-serif;
+  font-family: "Russo One", sans-serif;
   color: silver;
-  
+
   text-shadow: 3px 3px 5px black;
 }
 #lets-go-button {
@@ -83,9 +87,12 @@ label {
   border: 1px solid black;
   padding: 4px;
 }
-.media-button, #user-search, #search-button, #lets-go-button {
-height: 40px;
-font-family: 'Russo One', sans-serif;
+.media-button,
+#user-search,
+#search-button,
+#lets-go-button {
+  height: 40px;
+  font-family: "Russo One", sans-serif;
 }
 .media-button {
   margin-top: 6px;
@@ -107,26 +114,29 @@ font-family: 'Russo One', sans-serif;
   background: black;
   border: 4px solid saddlebrown;
   color: silver;
-  /*background-color: forestgreen;*/
 }
 .not-selected {
   border: none;
   background: black;
   color: silver;
 }
-#search-button, #lets-go-button {
+#search-button,
+#lets-go-button {
   width: 80px;
   margin-top: 8px;
   background-image: radial-gradient(springgreen, darkgreen);
-  border:none;
+  border: none;
 }
-#search-button:hover, #lets-go-button:hover {
+#search-button:hover,
+#lets-go-button:hover {
   background-image: radial-gradient(lightgreen, springgreen);
 }
 #lets-go-button {
   margin-bottom: 15px;
 }
-#see-also-text > button, #not-what-wanted > button, #try-similar > button {
+#see-also-text > button,
+#not-what-wanted > button,
+#try-similar > button {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -134,12 +144,13 @@ font-family: 'Russo One', sans-serif;
 #release-div {
   display: inline;
 }
-#artist-info-section, #album-info-section {
+#artist-info-section,
+#album-info-section {
   display: flex;
   justify-content: center;
 }
 .new-search {
-  font-family: 'Acme', sans-serif;
+  font-family: "Acme", sans-serif;
   font-size: 15px;
   background-color: black;
   padding: 6px;
@@ -158,19 +169,22 @@ font-family: 'Russo One', sans-serif;
   margin-right: auto;
 }
 
-
-
 /* Media Queries---------------------------------------------------------------------------------*/
 
 @media screen and (min-width: 768px) {
-  h2, h1 {
+  h2,
+  h1 {
     font-size: 60px;
     margin-top: 60px;
   }
-  #welcome-text, #directions, .media-button, #no-results-message  {
+  #welcome-text,
+  #directions,
+  .media-button,
+  #no-results-message {
     font-size: 25px;
   }
-  #search-button, #lets-go-button {
+  #search-button,
+  #lets-go-button {
     width: 25%;
     height: 80px;
     font-size: 25px;
@@ -180,11 +194,16 @@ font-family: 'Russo One', sans-serif;
     height: 70px;
     font-size: 25px;
   }
-  #see-also-text, #not-what-wanted, #try-similar, #similar-songs {
+  #see-also-text,
+  #not-what-wanted,
+  #try-similar,
+  #similar-songs {
     display: flex;
     justify-content: center;
   }
-  #see-also-text > button, #not-what-wanted > button, #try-similar > button {
+  #see-also-text > button,
+  #not-what-wanted > button,
+  #try-similar > button {
     margin-left: none;
     margin-right: none;
     width: 30%;
@@ -200,7 +219,8 @@ font-family: 'Russo One', sans-serif;
   img {
     width: 30%;
   }
-  .identifier, .response {
+  .identifier,
+  .response {
     font-size: 25px;
   }
   .music-image {
@@ -215,11 +235,12 @@ font-family: 'Russo One', sans-serif;
   }
   .identifier {
     margin: 15px;
-    }
+  }
 }
 
 @media screen and (min-width: 1100px) {
-img, .music-image {
-  width: 20%;
-}
+  img,
+  .music-image {
+    width: 20%;
+  }
 }
