@@ -83,21 +83,28 @@ height: 40px;
 font-family: 'Russo One', sans-serif;
 }
 .media-button {
-  border: none;
-  width: 60px;
+  
+  width: 70px;
   font-size: 100%;
 }
 #user-search {
   font-size: 100%;
   text-align: left;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 .selected {
-  margin: 1px solid orange;
-  background-image: radial-gradient(mediumslateblue, darkblue);
+  text-align: center;
+  background: black;
+  border: 4px solid saddlebrown;
+  color: silver;
   /*background-color: forestgreen;*/
 }
 .not-selected {
-  background-image: radial-gradient(lightpink, darkred);
+  border: none;
+  background: black;
+  color: silver;
 }
 #search-button, #lets-go-button {
   width: 80px;
