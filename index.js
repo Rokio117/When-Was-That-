@@ -69,7 +69,7 @@ function fetchMovieData(movieSearchData) {
         getAlternateMovieSearches(responseJson);
       } else {
         $('#not-wanted-div').addClass('hidden')
-        noResults = `<div id="no-results-message"> Sorry, we couldn't find any searches for that".
+        noResults = `<div id="no-results-message"> Sorry, we couldn't find any searches for that.
         Make sure your spelling is correct, and you selected the right media type, then try again.`;
 
         $("#results").append(noResults);
