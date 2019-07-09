@@ -167,6 +167,15 @@ label {
   margin-left: auto;
   margin-right: auto;
 }
+footer {
+  color: white;
+  font-size: 15px;
+  font-family: "Acme", sans-serif;
+  margin-bottom: 10px;
+}
+#movie-database-logo {
+  width: 50px;
+}
 
 /* Media Queries---------------------------------------------------------------------------------*/
 
