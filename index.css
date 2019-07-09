@@ -34,7 +34,7 @@ button:hover {
 form {
   padding: 0px;
 }
-img {
+#search-image, .music-image {
   width: 40%;
   display: block;
   margin-left: auto;
@@ -168,13 +168,18 @@ label {
   margin-right: auto;
 }
 footer {
+  margin-top: 50px;
   color: white;
   font-size: 15px;
   font-family: "Acme", sans-serif;
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
 }
 #movie-database-logo {
   width: 50px;
+  margin-left: none;
+  margin-right:none;
 }
 
 /* Media Queries---------------------------------------------------------------------------------*/
@@ -223,7 +228,7 @@ footer {
     margin-top: 15px;
     margin-bottom: 15px;
   }
-  img {
+  #search-image {
     width: 30%;
   }
   .identifier,
